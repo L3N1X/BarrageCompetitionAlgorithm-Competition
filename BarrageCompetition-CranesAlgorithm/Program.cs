@@ -24,7 +24,7 @@ namespace BarrageCompetition_CranesAlgorithm
 
         static void Main(string[] args)
         {
-            int[] p = { 5, 9, 14 };
+            int[] p = { 5, 9, 40 };
             int[] a = { 2, 3, 2 };
             int b = 3;
             int e = 16;
@@ -49,24 +49,27 @@ namespace BarrageCompetition_CranesAlgorithm
 
             cranes.ToList().Sort((left, right) => left.At.CompareTo(right.At));
 
-            for (int i = 0; i < cranes.Count; i++)
+            int craneIndex = 0;
+            for (int i = cranes[0].From; i < cranes[cranes.Count - 1].To; i++)
             {
-                for (int j = cranes[i].From; j <= cranes[i].To; j++)
+                if (i == b || i == e)
+                    continue;
+                if ((i >= b && i <= e) || (i >= e && i <= b))
                 {
-                    if (j == b || j == e)
-                        continue;
-                    if ((j >= b && j <= e) || (j >= e && j <= b))
+                    if (craneIndex != cranes.Count - 1)
                     {
-                        if(i != cranes.Count - 1)
-                        {
-                            if (j == cranes[i].To && j + 1 == cranes[i + 1].From)
-                                return false;
-                        }
-                        if (coveredFields.Add(j))
+                        if (i == cranes[craneIndex].To && i + 1 == cranes[craneIndex + 1].From)
                             return false;
                     }
+                    if (coveredFields.Add(i))
+                        return false;
                 }
+                if (i == cranes[craneIndex].To)
+                    craneIndex++;
+                if (i == cranes[craneIndex].To && craneIndex == cranes.Count - 1)
+                    break;
             }
+
             return true;
         }
     }
